@@ -3,6 +3,8 @@ import logging
 import modules
 import multiprocessing
 from optparse import Values
+import os
+import signal
 import servicemanager
 import sys
 import threading
@@ -285,8 +287,11 @@ class JMXFetchProcess(multiprocessing.Process):
         if self.is_enabled:
             self.jmx_daemon.run()
 
-    def stop(self):
-        pass
+    def terminate(self):
+        """
+        Overrides `multiprocessing.Process.terminate` to properly stop JMXFetch subprocess.
+        """
+        os.kill(self.pid, signal.CTRL_BREAK_EVENT)
 
 
 if __name__ == '__main__':
