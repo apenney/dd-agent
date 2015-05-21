@@ -291,8 +291,13 @@ class JMXFetchProcess(multiprocessing.Process):
         """
         Overrides `multiprocessing.Process.terminate` to properly stop JMXFetch subprocess.
         """
-        servicemanager.LogInfoMsg("Custom terminate function called")
-        os.kill(self.pid, signal.CTRL_BREAK_EVENT)
+        servicemanager.LogInfoMsg("Custom terminate function called %s" % self.pid)
+        try:
+            servicemanager.LogInfoMsg("First attempt")
+            os.kill(self.pid, signal.CTRL_BREAK_EVENT)
+        except Exception, e:
+            servicemanager.LogInfoMsg("Second attempt")
+            os.kill(self.pid, signal.CTRL_BREAK_EVENT)
 
 
 if __name__ == '__main__':
