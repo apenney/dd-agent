@@ -14,7 +14,7 @@ end
 def section(name)
   timestamp = Time.now.utc.iso8601
   puts ''
-  puts "[#{timestamp}] >>>>>>>>>>>>>> #{name} STAGE".black.on_white
+  puts "[#{timestamp}] >>>>>>>>>>>>>> #{name} STAGE"
   puts ''
 end
 
