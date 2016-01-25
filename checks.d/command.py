@@ -12,17 +12,11 @@ class CommandCheck(AgentCheck):
         command_output = self._command(instance['command'])
 
         if instance['output'] not in command_output:
-            event = {
-                "timestamp": int(time.time()),
-                "event_type": 'command',
-                "msg_title": 'Command {} check failed'.format(instance['command']),
-                "msg_text": 'Command Check output failed: {} not found in {}'.format(instance['output'], instance['command']),
-                "alert_type": 'warning',
-                "source_type_name": 'command',
-                "host": self.hostname,
-                "tags": ["host:{}".format(self.hostname)],
-            }
-            self.event(event)
+            self.service_check('command.{}'.format(instance['command']), 1,
+                tags=["host:{}".format(self.hostname)],
+                hostname=self.hostname,
+                message='Command Check output failed: {} not found in {}'.format(instance['output'], instance['command'])
+            )
 
 
     def _command(self, command):
